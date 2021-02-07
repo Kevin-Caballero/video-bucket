@@ -27,15 +27,21 @@ export const getVideos = async (req: Request, res: Response) => {
 
 export const createVideo = async (req: Request, res: Response) => {
     try {
-        const videoFound = await Video.findOne({ url: req.body })
+        console.log('req.body', req.body);
+        const videoFound = await Video.findOne({ url: req.body.url })
+        console.log('findone', videoFound);
+
         if (videoFound) {
+            console.log('if------------------');
             res.status(301).json({ message: 'The URL already exists' })
         } else {
+            console.log('else------------------');
             const newVideo = new Video(req.body);
             const savedVideo = await newVideo.save();
             res.json(savedVideo)
         }
     } catch (error) {
+        console.log('catch------------------');
         res.status(500).json({ message: error });
     }
 }
